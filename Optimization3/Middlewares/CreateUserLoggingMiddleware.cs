@@ -20,8 +20,6 @@ public class CreateUserLoggingMiddleware
         {
             var req = context.Request;
 
-            req.EnableBuffering();
-
             using var reader = new StreamReader(req.Body, Encoding.UTF8, true, 1024, true);
             var bodyStr = reader.ReadToEnd();
 
@@ -29,7 +27,5 @@ public class CreateUserLoggingMiddleware
 
             logger.LogInformation($"User {userViewModel.FirstName} {userViewModel.LastName} is created.");
         }
-
-        await next(context);
     }
 }
