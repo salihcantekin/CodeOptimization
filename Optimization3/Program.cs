@@ -10,7 +10,7 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Services.AddSingleton<UserService>();
+builder.Services.AddTransient<UserService>();
 builder.Services.AddSingleton<CreateUserLoggingMiddleware>();
 
 var app = builder.Build();

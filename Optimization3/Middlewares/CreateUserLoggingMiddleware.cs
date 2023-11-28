@@ -22,7 +22,7 @@ public class CreateUserLoggingMiddleware : IMiddleware
 
         var controllerName = controllerActionDescriptor.ControllerName;
         var actionName = controllerActionDescriptor.ActionName;
-
+        
         //var controllerName = context.Request.RouteValues["controller"]?.ToString();
         //var actionName = context.Request.RouteValues["action"]?.ToString();
 
@@ -30,7 +30,10 @@ public class CreateUserLoggingMiddleware : IMiddleware
             && controllerName.Equals("user", StringComparison.OrdinalIgnoreCase))
         {
             context.Request.EnableBuffering();
-
+            // body as stream
+            // read as json
+            // cast to object
+            
             var userViewModel = await JsonSerializer.DeserializeAsync<UserViewModel>(context.Request.Body);
 
             logger.LogInformation($"User {userViewModel.FirstName} {userViewModel.LastName} is created.");

@@ -7,3 +7,10 @@ public struct UserViewModel
     public string LastName { get; set; }
     public string EmailAddress { get; set; }
 }
+
+public struct CreateUserRequestModel
+{
+    public string FirstName { get; set; }
+    public string LastName { get; set; }
+    public string EmailAddress { get; set; }
+}

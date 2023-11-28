@@ -4,7 +4,7 @@ namespace Optimization3.Services;
 
 public class UserService
 {
-    public bool CreateUser(UserViewModel user)
+    public bool CreateUser(CreateUserRequestModel user)
     {
         // Saving to Storage
 

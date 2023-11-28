@@ -14,7 +14,7 @@ public class UserController : ControllerBase
         this.userService = userService;
     }
 
-    [HttpGet()]
+    [HttpGet]
     public ActionResult<IEnumerable<UserViewModel>> GetUsers()
     {
         var users = userService.GetUsersAsync();
@@ -23,7 +23,7 @@ public class UserController : ControllerBase
     }
 
     [HttpPost]
-    public ActionResult<bool> CreateUser([FromBody] UserViewModel user)
+    public ActionResult<bool> CreateUser([FromBody] CreateUserRequestModel user)
     {
         var isUserCreated = userService.CreateUser(user);
 
