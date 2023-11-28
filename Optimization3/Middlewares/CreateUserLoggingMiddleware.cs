@@ -14,7 +14,7 @@ public class CreateUserLoggingMiddleware
         this.logger = logger;
     }
 
-    public async Task InvokeAsync(HttpContext context, RequestDelegate next)
+    public void Invoke(HttpContext context, RequestDelegate next)
     {
         if (context.Request.Path.Value.Contains("CreateUser"))
         {
