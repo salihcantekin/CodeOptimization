@@ -5,7 +5,7 @@ using System.Text.Json;
 
 namespace Optimization3.Middlewares;
 
-public class CreateUserLoggingMiddleware : IMiddleware
+public class CreateUserLoggingMiddleware
 {
     private readonly ILogger<CreateUserLoggingMiddleware> logger;
 
@@ -23,13 +23,11 @@ public class CreateUserLoggingMiddleware : IMiddleware
             req.EnableBuffering();
 
             using var reader = new StreamReader(req.Body, Encoding.UTF8, true, 1024, true);
-            var bodyStr = await reader.ReadToEndAsync();
+            var bodyStr = reader.ReadToEnd();
 
             var userViewModel = JsonSerializer.Deserialize<UserViewModel>(bodyStr);
 
             logger.LogInformation($"User {userViewModel.FirstName} {userViewModel.LastName} is created.");
-
-            req.Body.Position = 0;
         }
 
         await next(context);

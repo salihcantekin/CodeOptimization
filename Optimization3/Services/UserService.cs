@@ -7,7 +7,6 @@ public class UserService
     public Task<bool> CreateUser(UserViewModel user)
     {
         // Saving to Storage
-
         var created = true; // or false, depending on the result
 
         return Task.FromResult(created);

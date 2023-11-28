@@ -17,7 +17,9 @@ public class UserController : ControllerBase
     [HttpGet("GetUsers")]
     public ActionResult<List<UserViewModel>> GetUsers()
     {
-        var users = userService.GetUsersAsync().ToList();
+        var users = userService
+                        .GetUsersAsync()
+                        .ToList();
 
         return Ok(users);
     }
