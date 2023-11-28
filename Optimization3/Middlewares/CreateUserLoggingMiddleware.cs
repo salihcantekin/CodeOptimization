@@ -1,6 +1,5 @@
-﻿
+﻿using Microsoft.AspNetCore.Mvc.Controllers;
 using Optimization3.Models;
-using System.Text;
 using System.Text.Json;
 
 namespace Optimization3.Middlewares;
@@ -16,20 +15,28 @@ public class CreateUserLoggingMiddleware : IMiddleware
 
     public async Task InvokeAsync(HttpContext context, RequestDelegate next)
     {
-        if (context.Request.Path.Value.Contains("CreateUser"))
+        var controllerActionDescriptor = context
+                                            .GetEndpoint()
+                                            .Metadata
+                                            .GetMetadata<ControllerActionDescriptor>();
+
+        var controllerName = controllerActionDescriptor.ControllerName;
+        var actionName = controllerActionDescriptor.ActionName;
+
+        //var controllerName = context.Request.RouteValues["controller"]?.ToString();
+        //var actionName = context.Request.RouteValues["action"]?.ToString();
+
+        if (actionName.Equals("createuser", StringComparison.OrdinalIgnoreCase)
+            && controllerName.Equals("user", StringComparison.OrdinalIgnoreCase))
         {
-            var req = context.Request;
+            context.Request.EnableBuffering();
 
-            req.EnableBuffering();
-
-            using var reader = new StreamReader(req.Body, Encoding.UTF8, true, 1024, true);
-            var bodyStr = await reader.ReadToEndAsync();
-
-            var userViewModel = JsonSerializer.Deserialize<UserViewModel>(bodyStr);
+            var userViewModel = await JsonSerializer.DeserializeAsync<UserViewModel>(context.Request.Body);
 
             logger.LogInformation($"User {userViewModel.FirstName} {userViewModel.LastName} is created.");
 
-            req.Body.Position = 0;
+            context.Request.Body.Position = 0;
+            //context.Request.Body.Seek(0, SeekOrigin.Begin);
         }
 
         await next(context);

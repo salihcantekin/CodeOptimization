@@ -14,17 +14,19 @@ public class UserController : ControllerBase
         this.userService = userService;
     }
 
-    [HttpGet("GetUsers")]
-    public ActionResult<List<UserViewModel>> GetUsers()
+    [HttpGet()]
+    public ActionResult<IEnumerable<UserViewModel>> GetUsers()
     {
-        var users = userService.GetUsersAsync().ToList();
+        var users = userService.GetUsersAsync();
 
         return Ok(users);
     }
 
-    [HttpPost("CreateUser")]
-    public void CreateUser([FromQuery] UserViewModel user)
+    [HttpPost]
+    public ActionResult<bool> CreateUser([FromBody] UserViewModel user)
     {
-        _ = userService.CreateUser(user);
+        var isUserCreated = userService.CreateUser(user);
+
+        return Ok(isUserCreated);
     }
 }
